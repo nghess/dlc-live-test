@@ -30,19 +30,16 @@ while True:
 
     # Calculate distance and activation
     target = (int(frame.shape[1]-5), int(frame.shape[0]/2))
-    distance = tuple(map(lambda k, v: abs(k - v), target, nose))
-    x = round((target[1]-distance[1])/target[1], 2)  # X distance as percent of frame
-    y = round((target[0]-distance[0])/target[0], 2)  # Y distance as percent of frame
-    pct = gaussian(x*y, 1, .25)  # Collapse distance and run through 1d Gaussian
+    length = cv2.norm(target, nose)
+    laser = gaussian(length, 0, int(frame.shape[1]*.1))  # Collapse distance and run through 1d Gaussian
 
-    # Draw Dots
-    frame = cv2.circle(frame, nose, int(radius*pct), (int(255*pct), int(255*pct), 0, .5), thickness)
-    #frame = cv2.circle(frame, head, radius, (0, 255, 0), thickness)
-    #frame = cv2.circle(frame, body, radius, (0, 0, 255), thickness)
-    #frame = cv2.circle(frame, target, radius, (0, 128, 255), thickness)
+    # Draw dot
+    frame = cv2.circle(frame, nose, int(radius*laser), (int(255*laser), int(255*laser), 0, .5), thickness)
 
+    # Show video
     cv2.imshow('Pose', frame)
-
     cv2.waitKey(1)
+
+    # Reset loop
     if i == 999:
         i = 0
