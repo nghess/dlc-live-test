@@ -1,20 +1,25 @@
-from dlclive import DLCLive, Processor
-from PIL import Image
-from numpy import asarray
 import time
+import cv2
+from dlclive import DLCLive, Processor
 
 folder = 'model/'
 dlc_proc = Processor()
 dlc_live = DLCLive(folder, processor=dlc_proc)
+dlc_live.init_inference()
 
-for i in range(0, 10):
+f_times = []
+
+for i in range(1, 11):
 
     tic = time.perf_counter()
-    img = Image.open('frames/mouse.tif')
-    data = asarray(img)
-    dlc_live.init_inference(data)
-    pose = dlc_live.get_pose(data)
+    img = cv2.imread('frames/ ('+str(i)+').jpg', 0)
+    #data = asarray(img)
+
+    pose = dlc_live.get_pose(img)
     toc = time.perf_counter()
 
-    print(pose)
-    print(f"{tic-toc:0.4f}")
+    print(img.shape[1])
+    #print(f"{tic-toc:0.4f}")
+    f_times.append(f"{tic-toc:0.4f}")
+
+print(f_times)
