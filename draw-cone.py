@@ -17,9 +17,9 @@ def orbit(point1, point0, degrees):
     c = (c[0]+point0[0], c[1]+point0[1])
     return c
 
+
 while True:
     degree = degree + 1
-    #length = (length[0], int(length[1]-change))
 
     p1 = orbit(length, origin, degree)
     p2 = orbit(length, origin, -degree)
