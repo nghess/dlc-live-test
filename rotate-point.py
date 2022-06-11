@@ -18,9 +18,10 @@ def orbit(dist, b1, spd=1):
     return c
 
 
-while True:  # i <= 2*np.pi:
 
-    i = i+.001
+while i <= 2*np.pi:
+
+    i = i+.01
 
     m1 = orbit(200, origin)
     m2 = orbit(100, m1, 3)
@@ -29,16 +30,15 @@ while True:  # i <= 2*np.pi:
     m5 = orbit(45, m2, 6)
 
     image = np.zeros((height, width, 3), np.uint8)  # Clear frame
-    image = cv2.circle(image, origin, 50, (32, 32, 32), -1, lineType=cv2.LINE_AA)
-    image = cv2.circle(image, m1, 15, (75, 75, 75), -1, lineType=cv2.LINE_AA)
-    image = cv2.circle(image, m2, 7, (128, 128, 255), -1, lineType=cv2.LINE_AA)
+    image = cv2.circle(image, origin, 50, (32, 16, 16), -1, lineType=cv2.LINE_AA)
+    image = cv2.circle(image, m1, 15, (128, 75, 75), -1, lineType=cv2.LINE_AA)
+    image = cv2.circle(image, m2, 7, (200, 128, 128), -1, lineType=cv2.LINE_AA)
     image = cv2.circle(image, m3, 1, (255, 255, 255), -1, lineType=cv2.LINE_AA)
     image = cv2.circle(image, m4, 1, (255, 255, 255), -1, lineType=cv2.LINE_AA)
     image = cv2.circle(image, m5, 1, (255, 255, 255), -1, lineType=cv2.LINE_AA)
-
-
     cv2.imshow('Points', image)
+
     count = count + 1
-    #cv2.imwrite("output/" + str(count) + ".png", image)
+    cv2.imwrite("output/" + str(count) + ".png", image)
     cv2.waitKey(1)
 
