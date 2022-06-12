@@ -3,11 +3,10 @@ import numpy as np
 
 height = 756
 width = 756
+degree = 45
 
 origin = (int(height/2), int(width/2))
 length = (int(height/2), int(width/10))
-degree = 0
-change = 1
 
 
 def orbit(point1, point0, degrees):
@@ -27,20 +26,24 @@ while True:
 
     image = np.zeros((height, width, 3), np.uint8)  # Clear frame
 
-    image = cv2.line(image, p1, origin, (255, 255, 0), 1)
-    image = cv2.circle(image, p1, 5, (0, 255, 255), 1)
-    image = cv2.line(image, p2, origin, (255, 255, 0), 1)
-    image = cv2.circle(image, p2, 5, (0, 255, 255), 1)
+    # Draw Contours
+    image = cv2.line(image, p1, origin, (0, 0, 255), 1)
+    image = cv2.line(image, p2, origin, (0, 0, 255), 1)
     image = cv2.ellipse(image, origin, axes, -90, -degree, degree, (0, 0, 255))
 
-    print(p1)
-    print(origin)
-    print(axes)
+    # Fill Layer
+    contour = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    contour = cv2.findContours(contour, mode=1, method=1)
+    image = cv2.drawContours(image, [contour[0][0]], -1, color=(0, 0, abs(degree)), thickness=-1, lineType=cv2.LINE_AA)
+
+    # Final Layer
+    image = cv2.circle(image, p2, 5, (255, 255, 255), -1, lineType=cv2.LINE_AA)
+    image = cv2.circle(image, p1, 5, (255, 255, 255), -1, lineType=cv2.LINE_AA)
+    image = cv2.ellipse(image, origin, axes, -90, -degree, degree, (255, 255, 255), lineType=cv2.LINE_AA)
+    image = cv2.line(image, p1, origin, (255, 255, 255), 1, lineType=cv2.LINE_AA)
+    image = cv2.line(image, p2, origin, (255, 255, 255), 1, lineType=cv2.LINE_AA)
 
     cv2.imshow('Cone', image)
-    cv2.waitKey(16)
+    cv2.waitKey(10)
     if degree == 180:
         degree = -180
-        change = -1
-    if degree == 0:
-        change = 1
