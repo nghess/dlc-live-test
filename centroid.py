@@ -40,12 +40,12 @@ while True:
 
     # Show video
     cv2.imshow('Mouse Centroid', frame)
-    #cv2.imwrite("output/" + str(i) + ".png", frame)
+    cv2.imwrite("output/" + str(i) + ".png", frame)
     cv2.waitKey(1)
 
     # Reset loop
     if i == 999:
         i = 0
         trajectory = []
-        #break
+        break
 

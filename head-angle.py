@@ -56,13 +56,15 @@ while True:
         if angles[0] > 0:
             frame = cv2.ellipse(frame, head, axes, 90, angles[0], 0, (0, 0, 255))
         else:
+            obtuse = int(90 - angles[0])
             frame = cv2.ellipse(frame, head, axes, -90, angles[0], 0, (0, 0, 255))
 
     # Show video
     cv2.imshow('Pose', frame)
-    #cv2.imwrite("output/" + str(i) + ".png", frame)
+    cv2.imwrite("output/" + str(i) + ".png", frame)
     cv2.waitKey(1)
 
     # Reset loop
     if i == 969:
         i = 0
+        break
