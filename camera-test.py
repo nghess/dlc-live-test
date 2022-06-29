@@ -10,7 +10,7 @@ if not cap.isOpened():
 while True:
     i += 1
     ret, frame = cap.read()
-    frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
+    #frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
     cv2.imshow('Input', frame)
     #cv2.imwrite("output/" + str(i) + ".png", frame)
     c = cv2.waitKey(1)
