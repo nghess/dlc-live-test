@@ -41,23 +41,22 @@ while True:
     radius = cv2.norm(head, nose)
     axes = (int(radius), int(radius))
 
+    # Get 360 degree readout
+    degree = int(angles[0])
+    if nose[0] > head[0] and degree < 0:
+        degree = 180 + degree
+    elif nose[0] < head[0] and degree < 0:
+        degree = 360 + degree
+    elif nose[0] < head[0] and degree > 0:
+        degree = 180 + degree
+
     # Draw lines
     frame = cv2.line(frame, nose, head, (255, 255, 0), 2)
     frame = cv2.line(frame, (head[0], frame.shape[0]), (head[0], 0), (0, 0, 0), 1)
-    frame = cv2.putText(frame, str(int(angles[0])), (head[0]-50, head[1]-50), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 0, 255))
+    frame = cv2.putText(frame, str(degree), (head[0]-50, head[1]-50), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 0, 255))
 
-    # Conditionals to draw the radius on correct quadrant
-    if nose[0] > head[0]:
-        if angles[0] > 0:
-            frame = cv2.ellipse(frame, head, axes, -90, angles[0], 0, (0, 0, 255))
-        else:
-            frame = cv2.ellipse(frame, head, axes, 90, angles[0], 0, (0, 0, 255))
-    else:
-        if angles[0] > 0:
-            frame = cv2.ellipse(frame, head, axes, 90, angles[0], 0, (0, 0, 255))
-        else:
-            obtuse = int(90 - angles[0])
-            frame = cv2.ellipse(frame, head, axes, -90, angles[0], 0, (0, 0, 255))
+    # Draw arc of angle
+    frame = cv2.ellipse(frame, head, axes, -90, degree, 0, (0, 0, 255))
 
     # Show video
     cv2.imshow('Pose', frame)
@@ -67,4 +66,3 @@ while True:
     # Reset loop
     if i == 969:
         i = 0
-        break
