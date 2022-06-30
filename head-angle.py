@@ -52,7 +52,7 @@ while True:
 
     # Draw lines
     frame = cv2.line(frame, nose, head, (255, 255, 0), 2)
-    frame = cv2.line(frame, (head[0], frame.shape[0]), (head[0], 0), (0, 0, 0), 1)
+    frame = cv2.line(frame, (head[0], frame.shape[0]), (head[0], 0), (255, 255, 0), 1)
     frame = cv2.putText(frame, str(degree), (head[0]-50, head[1]-50), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 0, 255))
 
     # Draw arc of angle
