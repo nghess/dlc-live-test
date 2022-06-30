@@ -11,10 +11,8 @@ while True:
     i += 1
     ret, frame = cap.read()
     cv2.imshow('Input', frame)
-    #cv2.imwrite("output/" + str(i) + ".png", frame)
+    cv2.imwrite("output/" + str(i) + ".png", frame)
     c = cv2.waitKey(1)
-    if c == 27:
-        break
 
 cap.release()
 cv2.destroyAllWindows()
