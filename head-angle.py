@@ -56,7 +56,10 @@ while True:
     frame = cv2.putText(frame, str(degree), (head[0]-50, head[1]-50), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 0, 255))
 
     # Draw arc of angle
-    frame = cv2.ellipse(frame, head, axes, -90, degree, 0, (0, 0, 255))
+    if nose[0] >= head[0]:
+        frame = cv2.ellipse(frame, head, axes, -90, degree, 0, (0, 0, 255))
+    elif nose[0] <= head[0]:
+        frame = cv2.ellipse(frame, head, axes, -90, 180, degree, (0, 0, 255))
 
     # Show video
     cv2.imshow('Pose', frame)
