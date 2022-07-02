@@ -8,10 +8,8 @@ dlc_proc = Processor()
 dlc_live = DLCLive(folder, processor=dlc_proc)
 dlc_live.init_inference()
 
-i = 0
-radius = 20
+radius = 5
 thickness = -1
-
 
 def gaussian(x, mu, sig):
     return np.exp(-np.power(x - mu, 2.) / (2 * np.power(sig, 2.)))
@@ -28,13 +26,12 @@ if not cap.isOpened():
 while True:
     start_time = time.time()  # start time of the loop
     # Load frame
-    i += 1
+    i = 0
     ret, frame = cap.read()
     #frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
 
     # Get poses
     pose = dlc_live.get_pose(frame)
-    print(pose)
     wrist = (int(pose[0, 0]), int(pose[0, 1]))
     thmb1 = (int(pose[1, 0]), int(pose[1, 1]))
     thmb2 = (int(pose[2, 0]), int(pose[2, 1]))
@@ -62,7 +59,7 @@ while True:
               ring3, ring4, pink1, pink2, pink3, pink4]
     for point in points:
         i += 10
-        frame = cv2.circle(frame, point, 3, (i, i, i+55), thickness)
+        frame = cv2.circle(frame, point, radius, (i, i, i+55), thickness)
 
     # Display FPS and Resolution
     fps = f"FPS: {round(1.0 / (time.time() - start_time))}"
