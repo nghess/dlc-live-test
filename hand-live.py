@@ -22,6 +22,11 @@ cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     raise IOError("Cannot open webcam")
 
+thmb_l = 0
+indx_l = 0
+midl_l = 0
+ring_l = 0
+pink_l = 0
 
 while True:
     start_time = time.time()  # start time of the loop
@@ -60,6 +65,30 @@ while True:
     for point in points:
         i += 10
         frame = cv2.circle(frame, point, radius, (i, i, i+55), thickness)
+
+    # Key Press
+    thmb_c = cv2.norm(thmb2, thmb4)
+    indx_c = cv2.norm(indx2, indx4)
+    midl_c = cv2.norm(midl2, midl4)
+    ring_c = cv2.norm(ring2, ring4)
+    pink_c = cv2.norm(pink2, pink4)
+
+    if thmb_c <= .9*thmb_l:
+        frame = cv2.circle(frame, thmb4, 20, (0, 0, 255), thickness)
+    if indx_c <= .9*indx_l:
+        frame = cv2.circle(frame, indx4, 20, (0, 0, 255), thickness)
+    if ring_c <= .9*ring_l:
+        frame = cv2.circle(frame, midl4, 20, (0, 0, 255), thickness)
+    if ring_c <= .9*ring_l:
+        frame = cv2.circle(frame, ring4, 20, (0, 0, 255), thickness)
+    if pink_c <= .9*pink_l:
+        frame = cv2.circle(frame, pink4, 20, (0, 0, 255), thickness)
+
+    thmb_l = cv2.norm(thmb2, thmb4)
+    indx_l = cv2.norm(indx2, indx4)
+    midl_l = cv2.norm(midl2, midl4)
+    ring_l = cv2.norm(ring2, ring4)
+    pink_l = cv2.norm(pink2, pink4)
 
     # Display FPS and Resolution
     fps = f"FPS: {round(1.0 / (time.time() - start_time))}"
