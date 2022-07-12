@@ -17,6 +17,7 @@ def vf(x, y, length):
     vec = (int(nv[0]*length+x), int(nv[1]*length+y))
     return vec, mag
 
+# trying to normalize the old-fashioned way
 def vf2(x, y, length):
     vx = -y/np.sqrt(x + y)
     vy = x/np.sqrt(x + y)
