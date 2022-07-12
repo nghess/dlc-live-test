@@ -29,8 +29,8 @@ def vf2(x, y, length):
 
 while True:
     image = np.zeros((height, width, 3), np.uint8)  # Clear frame
-    for u in range(1, width, 20):
-        for v in range(1, height, 20):
+    for u in range(12, width, 20):
+        for v in range(5, height, 20):
             vector, m = vf(u, v, 10)
             image = cv2.line(image, (u, v), vector, (128, 128, 255*m), 1, lineType=cv2.LINE_AA)
             image = cv2.circle(image, vector, 1, (128, 128, 255*m), -1, lineType=cv2.LINE_AA)
