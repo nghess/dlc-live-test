@@ -39,7 +39,7 @@ while True:
     # Draw Markers
     frame = cv2.line(frame, nose, target, (int(255*laser), int(255*laser), int(255*laser)))
     frame = cv2.circle(frame, nose, int(radius*laser), (int(255*laser), int(255*laser), 0), thickness)
-    frame = cv2.circle(frame, target, 5, (0, 0, 255), thickness)
+
 
     # Display FPS and Resolution
     fps = f"FPS: {round(1.0 / (time.time() - start_time))}"
