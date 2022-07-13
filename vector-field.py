@@ -8,32 +8,36 @@ image = np.zeros((height, width, 3), np.uint8)  # Clear frame
 i = 0
 
 
-def vf(x, y, length):
+def rotate(x, y, d):
+    rot = (int(x * np.cos(d) - y * np.sin(d)), int(x * np.sin(d) + y * np.cos(d)))
+    return rot
+
+
+def vf(x, y, length, d, norm=True):
     vx = -y/np.sqrt(x + y)
     vy = x/np.sqrt(x + y)
     mag = cv2.norm((x, y), (vx, vy))*.001
-    vec = [vx, vy]
-    nv = vec/np.linalg.norm(vec)
-    vec = (int(nv[0]*length+x), int(nv[1]*length+y))
-    return vec, mag
-
-# trying to normalize the old-fashioned way
-def vf2(x, y, length):
-    vx = -y/np.sqrt(x + y)
-    vy = x/np.sqrt(x + y)
-    mag = np.sqrt(vx**2+vy**2)
-    uni = (vx/mag, vy/mag)
-    vec = (x-int((vx*uni[0])*length), y-int((vy*uni[1])*length)+y)
+    rot = rotate(vx, vy, d)
+    vec = [rot[0], rot[1]]
+    if norm is True:
+        nv = vec/np.linalg.norm(vec)
+        vec = (int(nv[0]*length+x), int(nv[1]*length+y))
+    else:
+        vec = [int(rot[0])+x, int(rot[1])+y]
     return vec, mag
 
 
 while True:
     image = np.zeros((height, width, 3), np.uint8)  # Clear frame
-    for u in range(12, width, 20):
-        for v in range(5, height, 20):
-            vector, m = vf(u, v, 10)
+    for u in range(10, width, 20):
+        for v in range(10, height, 20):
+            vector, m = vf(u, v, 10, i, norm=False)
             image = cv2.line(image, (u, v), vector, (128, 128, 255*m), 1, lineType=cv2.LINE_AA)
             image = cv2.circle(image, vector, 1, (128, 128, 255*m), -1, lineType=cv2.LINE_AA)
 
     cv2.imshow('Vector Field', image)
     cv2.waitKey(1)
+    i += .1
+
+    if i >= 2*np.pi:
+        i = 0
