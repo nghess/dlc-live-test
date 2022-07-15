@@ -34,7 +34,7 @@ while True:
 
     if len(trajectory) > 1:
         for c in range(1, len(trajectory)):  # Draw lines between centers in trajectory list
-            image = cv2.line(frame, trajectory[c], trajectory[c-1], (0, 0, int((c/len(trajectory))*255)), 3, lineType=cv2.LINE_AA)
+            image = cv2.line(frame, trajectory[c], trajectory[c-1], (0, 0, int((c/len(trajectory))*255), .01), 3, lineType=cv2.LINE_AA)
 
     frame = cv2.circle(frame, (cX, cY), 7, (255, 255, 0), -1, lineType=cv2.LINE_AA)  # Draw centroid
 

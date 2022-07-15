@@ -58,7 +58,7 @@ while True:
     # Draw arc of angle
     if nose[0] >= head[0]:
         frame = cv2.ellipse(frame, head, axes, -90, degree, 0, (255, 255, 0))
-    elif nose[0] <= head[0]:
+    else:
         frame = cv2.ellipse(frame, head, axes, -90, 0, degree, (255, 255, 0))
 
     # Show video
