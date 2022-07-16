@@ -3,6 +3,7 @@ import numpy as np
 
 width = 1920
 height = 1080
+origin = (int(width/2), int(height/2))
 
 image = np.zeros((height, width, 3), np.uint8)  # Clear frame
 i = 0
@@ -23,12 +24,18 @@ def angle_btw(u,v):
 
 
 def vf(x, y, length, d, norm=True, deg=True):
-    vx = -y/np.sqrt(x + y)
-    vy = x/np.sqrt(x + y)
-    mag = cv2.norm((x, y), (vx, vy))*.001
-    rot = rotate(vx, vy, d)
-    vec = [rot[0], rot[1]]
+    x1 = x - origin[0]
+    y1 = -y + origin[1]
 
+    vx = y1/np.sqrt(x1**2 + y1**2)
+    vy = np.cos(vx)**50#**2#x1/np.sqrt(x1**2 + y1**2)
+
+    mag = np.linalg.norm([vx, vy])
+
+    #rot = rotate(vx, vy, d)
+    #vec = [int(rot[0]), int(rot[1])]
+
+    vec = [vx, vy]
     if deg is True:
         degree = angle_btw(vec, [0, 10])
 
@@ -36,8 +43,7 @@ def vf(x, y, length, d, norm=True, deg=True):
         nv = vec/np.linalg.norm(vec)
         vec = (int(nv[0]*length+x), int(nv[1]*length+y))
     else:
-        vec = [int(rot[0])+x, int(rot[1])+y]
-
+        vec = (int(vec[0])+x1, int(vec[1])+y1)
     return vec, mag, degree
 
 
@@ -51,11 +57,11 @@ while True:
             frame = cv2.putText(image, str(int(d)), (u+1, v-2), cv2.FONT_HERSHEY_SIMPLEX, .2, (128, 128, 255*m))
 
     count += 1
-    cv2.imwrite("output/vf/" + str(count) + ".png", image)
+    #cv2.imwrite("output/vf/" + str(count) + ".png", image)
     cv2.imshow('Vector Field', image)
     cv2.waitKey(10000)
-    #i += .1
+    #i += 1
 
     if i >= 2*np.pi:
-        #i = 0
+        i = 0
         break
