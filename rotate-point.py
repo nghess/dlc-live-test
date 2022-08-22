@@ -18,7 +18,6 @@ def orbit(dist, b1, spd=1):
     return c
 
 
-
 while i <= 2*np.pi:
 
     i = i+.01
