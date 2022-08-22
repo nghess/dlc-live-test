@@ -37,19 +37,20 @@ while True:
     laser = gaussian(length, 0, int(frame.shape[1]*.35))  # Collapse distance and run through 1d Gaussian
 
     # Draw Markers
-    frame = cv2.line(frame, nose, target, (int(255*laser), int(255*laser), int(255*laser)))
-    frame = cv2.circle(frame, nose, int(radius*laser), (int(255*laser), int(255*laser), 0), thickness)
+    frame = cv2.line(frame, nose, target, (int(255*laser), int(255*laser), int(255*laser)), lineType=cv2.LINE_AA)
+    frame = cv2.circle(frame, target, 3, (0, 0, 255), thickness, lineType=cv2.LINE_AA)
+    frame = cv2.circle(frame, nose, int(radius*laser), (int(255*laser), int(255*laser), 0), thickness, lineType=cv2.LINE_AA)
 
 
     # Display FPS and Resolution
-    fps = f"FPS: {round(1.0 / (time.time() - start_time))}"
-    res = f"{frame.shape[0]}x{frame.shape[1]}px"
-    frame = cv2.putText(frame, fps, (10, 20), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 0, 255), lineType=cv2.LINE_AA)
-    frame = cv2.putText(frame, res, (10, 40), cv2.FONT_HERSHEY_SIMPLEX, .5, (255, 0, 0), lineType=cv2.LINE_AA)
+    #fps = f"FPS: {round(1.0 / (time.time() - start_time))}"
+    #res = f"{frame.shape[0]}x{frame.shape[1]}px"
+    #frame = cv2.putText(frame, fps, (10, 20), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 0, 255), lineType=cv2.LINE_AA)
+    #frame = cv2.putText(frame, res, (10, 40), cv2.FONT_HERSHEY_SIMPLEX, .5, (255, 0, 0), lineType=cv2.LINE_AA)
 
     # Show video
     cv2.imshow('Pose', frame)
-    #cv2.imwrite("output/" + str(i) + ".png", frame)
+    cv2.imwrite("output/original/" + str(i) + ".png", frame)
     cv2.waitKey(1)
 
     # Reset loop

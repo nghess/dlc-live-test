@@ -27,8 +27,11 @@ def vf(x, y, length, d, norm=True, deg=True):
     x1 = x - origin[0]
     y1 = -y + origin[1]
 
+    #vx = np.sin(y1)#y1/np.sqrt(x1**2 + y1**2)
+    #vy = np.sin(x1)#np.cos(vx)**50#**2#x1/np.sqrt(x1**2 + y1**2)
+
     vx = y1/np.sqrt(x1**2 + y1**2)
-    vy = np.cos(vx)**50#**2#x1/np.sqrt(x1**2 + y1**2)
+    vy = x1/np.sqrt(x1**2 + y1**2)
 
     mag = np.linalg.norm([vx, vy])
 
@@ -54,7 +57,7 @@ while True:
             vector, m, d = vf(u, v, 10, i, norm=True)
             image = cv2.line(image, (u, v), vector, (128, 128, 255*m), 1, lineType=cv2.LINE_AA)
             image = cv2.circle(image, vector, 1, (128, 128, 255*m), -1, lineType=cv2.LINE_AA)
-            frame = cv2.putText(image, str(int(d)), (u+1, v-2), cv2.FONT_HERSHEY_SIMPLEX, .2, (128, 128, 255*m))
+            #frame = cv2.putText(image, str(int(d)), (u+1, v-2), cv2.FONT_HERSHEY_SIMPLEX, .2, (128, 128, 255*m))
 
     count += 1
     #cv2.imwrite("output/vf/" + str(count) + ".png", image)
