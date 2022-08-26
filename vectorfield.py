@@ -6,14 +6,11 @@ height = 1080
 origin = (int(width/2), int(height/2))
 
 image = np.zeros((height, width, 3), np.uint8)  # Clear frame
-i = 0
-count = 0
 
 
 def rotate(x, y, d):
     rot = (int(x * np.cos(d) - y * np.sin(d)), int(x * np.sin(d) + y * np.cos(d)))
     return rot
-
 
 def angle_btw(u,v):
     nu = np.linalg.norm(u)
@@ -27,16 +24,10 @@ def vf(x, y, length, d, norm=True, deg=True):
     x1 = x - origin[0]
     y1 = -y + origin[1]
 
-    #vx = np.sin(y1)#y1/np.sqrt(x1**2 + y1**2)
-    #vy = np.sin(x1)#np.cos(vx)**50#**2#x1/np.sqrt(x1**2 + y1**2)
-
     vx = y1/np.sqrt(x1**2 + y1**2)
     vy = x1/np.sqrt(x1**2 + y1**2)
 
     mag = np.linalg.norm([vx, vy])
-
-    #rot = rotate(vx, vy, d)
-    #vec = [int(rot[0]), int(rot[1])]
 
     vec = [vx, vy]
     if deg is True:
@@ -50,21 +41,26 @@ def vf(x, y, length, d, norm=True, deg=True):
     return vec, mag, degree
 
 
-while True:
-    image = np.zeros((height, width, 3), np.uint8)  # Clear frame
-    for u in range(10, width, 20):
-        for v in range(10, height, 20):
-            vector, m, d = vf(u, v, 10, i, norm=True)
-            image = cv2.line(image, (u, v), vector, (128, 128, 255*m), 1, lineType=cv2.LINE_AA)
-            image = cv2.circle(image, vector, 1, (128, 128, 255*m), -1, lineType=cv2.LINE_AA)
-            #frame = cv2.putText(image, str(int(d)), (u+1, v-2), cv2.FONT_HERSHEY_SIMPLEX, .2, (128, 128, 255*m))
+def vf_gen(save=False, show=False):
+    i = 0
+    count = 0
+    while True:
+        image = np.zeros((height, width, 3), np.uint8)  # Clear frame
+        for u in range(10, width, 20):
+            for v in range(10, height, 20):
+                vector, m, d = vf(u, v, 10, i, norm=True)
+                image = cv2.line(image, (u, v), vector, (128, 128, 255*m), 1, lineType=cv2.LINE_AA)
+                image = cv2.circle(image, vector, 1, (128, 128, 255*m), -1, lineType=cv2.LINE_AA)
+                #frame = cv2.putText(image, str(int(d)), (u+1, v-2), cv2.FONT_HERSHEY_SIMPLEX, .2, (128, 128, 255*m))
 
-    count += 1
-    #cv2.imwrite("output/vf/" + str(count) + ".png", image)
-    cv2.imshow('Vector Field', image)
-    cv2.waitKey(10000)
-    #i += 1
+        count += 1
 
-    if i >= 2*np.pi:
-        i = 0
-        break
+        if save:
+            cv2.imwrite("output/vf/" + str(count) + ".png", image)
+        if show:
+            cv2.imshow('Vector Field', image)
+            cv2.waitKey(10000)
+
+        if i >= 2*np.pi:
+            i = 0
+            break
