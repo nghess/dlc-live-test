@@ -9,6 +9,7 @@ dlc_live = DLCLive(folder, processor=dlc_proc)
 dlc_live.init_inference()
 
 i = 0
+line_length = []
 
 while True:
     # Load frame
@@ -51,15 +52,18 @@ while True:
         degree = 180 + degree
 
     # Draw lines
-    frame = cv2.line(frame, nose, head, (255, 255, 0), 1, lineType=cv2.LINE_AA)
-    frame = cv2.line(frame, (head[0], int(head[1]-radius)), head, (255, 255, 0), 1, lineType=cv2.LINE_AA)
+    #line_length.append(cv2.norm(nose, head))
+    line_dip = cv2.norm(nose, head)/48.5
+    line_color = (255*line_dip, 255*line_dip, (-255*line_dip)+255)
+    frame = cv2.line(frame, nose, head, line_color, 1, lineType=cv2.LINE_AA)
+    frame = cv2.line(frame, (head[0], int(head[1]-radius)), head, line_color, 1, lineType=cv2.LINE_AA)
     frame = cv2.putText(frame, str(degree), (head[0]-50, head[1]-50), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 0, 255), lineType=cv2.LINE_AA)
 
     # Draw arc of angle
     if nose[0] >= head[0]:
-        frame = cv2.ellipse(frame, head, axes, -90, degree, 0, (255, 255, 0), lineType=cv2.LINE_AA)
+        frame = cv2.ellipse(frame, head, axes, -90, degree, 0, line_color, lineType=cv2.LINE_AA)
     else:
-        frame = cv2.ellipse(frame, head, axes, -90, 0, degree, (255, 255, 0), lineType=cv2.LINE_AA)
+        frame = cv2.ellipse(frame, head, axes, -90, 0, degree, line_color, lineType=cv2.LINE_AA)
 
     # Show video
     cv2.imshow('Pose', frame)
@@ -68,4 +72,7 @@ while True:
 
     # Reset loop
     if i == 969:
-        i = 0
+        #i = 0
+
+        print(max(line_length))
+        break
