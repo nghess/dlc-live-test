@@ -44,12 +44,16 @@ while True:
             if k % 10 != 0:
                 trajectory[k] = (-10, -10)
         #    else:
-                #  add to dictionary for frame:line combos?
+        #  add to dictionary for frame:line combos?
 
         breadcrumbs = trajectory[i:]
         for c in range(1, len(breadcrumbs)):  # Draw dots between centers in trajectory list
             #frame = cv2.line(frame, breadcrumbs[c], breadcrumbs[c-1], (0, 0, 0), 1, lineType=cv2.LINE_AA)
-            frame = cv2.circle(frame, breadcrumbs[c], 3, (255, 255, 0), -1, lineType=cv2.LINE_AA)
+            color = (255-int((c/len(breadcrumbs))*255), 255-int((c/len(breadcrumbs))*255), 0)
+            #color = (255, 255, 0)
+            #radius = 5-int((c/len(breadcrumbs))*5)+1
+            radius = 3
+            frame = cv2.circle(frame, breadcrumbs[c], radius, color, -1, lineType=cv2.LINE_AA)
 
     # Show video
     cv2.imshow('Pose', frame)
