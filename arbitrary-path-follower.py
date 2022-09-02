@@ -27,7 +27,7 @@ width = 756
 degree = 0
 offset = (int(height/2), int(width/2))
 # Curve points file
-crv_file = "infinity_1k.txt"
+crv_file = "arbitrary3.txt"
 
 # Arguments
 full_crv = load_curve(crv_file)
@@ -62,4 +62,4 @@ def curve_follower(curve, trail, save=False):
             i = 0
 
 
-curve_follower(full_crv, tracer)
+curve_follower(full_crv, tracer, save=True)

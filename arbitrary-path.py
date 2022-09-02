@@ -20,9 +20,11 @@ height = 1080
 width = 1080
 degree = 0
 offset = (int(height/2), int(width/2))
+i = 0
 
 
 while True:
+    i += 1
     image = np.zeros((height, width, 3), np.uint8)  # Clear frame
     crv = load_curve(crv_file)
     for c in range(len(crv)):
@@ -34,4 +36,5 @@ while True:
         #image = cv2.putText(image, str(c), center_c, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1, cv2.LINE_AA)
 
     cv2.imshow('Points', image)
+    cv2.imwrite("output/segmentation/" + str(i) + ".png", image)
     cv2.waitKey(100)
