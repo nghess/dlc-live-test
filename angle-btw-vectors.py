@@ -24,7 +24,10 @@ v = [680, 389]
 u = np.subtract(u, origin)
 v = np.subtract(v, origin)
 
+print(u, v)
+
 angle = angle_btw(u, v)
+
 
 while True:
     # Clear frame

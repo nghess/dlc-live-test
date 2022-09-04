@@ -14,7 +14,7 @@ def load_curve(crv_file):
 
 
 # Curve points file
-crv_file = "curves/infinity.txt"
+crv_file = "curves/infinity_1k.txt"
 # Define canvas
 height = 1080
 width = 1080
