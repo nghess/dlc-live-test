@@ -27,7 +27,7 @@ width = 756
 degree = 0
 offset = (int(height/2), int(width/2))
 # Curve points file
-crv_file = "arbitrary3.txt"
+crv_file = "curves/arbitrary3.txt"
 
 # Arguments
 full_crv = load_curve(crv_file)

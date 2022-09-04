@@ -3,6 +3,12 @@ import numpy as np
 from dlclive import DLCLive, Processor
 import os
 
+# Initialize variables
+i = 0   # frame counter
+jitter = 0  # Jitter for curve points
+rng = 117  # Set random seed
+np.random.seed(rng)
+
 def load_curve(crv_file, jitter=5):
     file = open(crv_file, "r")
     data = file.read()
@@ -29,10 +35,10 @@ dlc_live = DLCLive(folder, processor=dlc_proc)
 dlc_live.init_inference()
 
 # Curve points file
-crv_file = "e:/dlc-live/arena_crv.txt"
+crv_file = "curves/arena_crv.txt"
 
 # Load curve
-crv = load_curve(crv_file)
+crv = load_curve(crv_file, jitter)
 popper = crv
 
 # Get video dimensions
@@ -42,10 +48,6 @@ width = int(dim_img.shape[1]*scale)
 height = int(dim_img.shape[0]*scale)
 offset = (int(height/2), int(width/2))
 
-# Initialize variables
-i = 0
-rng = 117
-np.random.seed(rng)
 
 while True:
     # Load frame
@@ -61,15 +63,18 @@ while True:
 
     # Pop point if nose is close
     for c in range(len(crv)):
-        if cv2.norm(nose, (crv[c][0], crv[c][1])) <= 15: #or nose[0] < crv[c][0] and nose[1] < crv[c][1]:
+        if cv2.norm(nose, (crv[c][0], crv[c][1])) <= 12: #or nose[0] < crv[c][0] and nose[1] < crv[c][1]:
             popper = crv[c:]
     if len(popper) > 0:
         crv = popper
 
     # Draw curve
-    for c in range(0, len(crv)):
-        if c == 0:
-            radius = 5
+    for c in range(1, len(crv)):
+        if c == 1:
+            radius = 7
+            color = (255, 255, 0)
+        elif c == 2:
+            radius = 2
             color = (255, 255, 0)
         else:
             radius = 1
@@ -85,7 +90,7 @@ while True:
 
     # Reset loop
     if i == frames_count:
-        crv = load_curve(crv_file)
+        crv = load_curve(crv_file, jitter)
         popper = crv
         i = 0
         break
