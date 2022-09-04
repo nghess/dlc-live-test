@@ -91,12 +91,12 @@ while True:
         pt1 = v
         pt2 = center_p
 
-        #u = np.subtract(pt1, center_c)
-        #v = np.subtract(pt2, center_c)
+        u = np.subtract(pt1, center_c)
+        v = np.subtract(pt2, center_c)
 
-        #print(v)
+        print(u, v)
         rad = angle_btw(u, v)
-        print(rad)
+        #print(rad)
 
         img = cv2.circle(img, center_c, 3, (255,255,0), -1, lineType=cv2.LINE_AA)
         img = cv2.circle(img, pt1, 3, (0,255,0), -1, lineType=cv2.LINE_AA)
@@ -105,7 +105,7 @@ while True:
 
         img = cv2.circle(img, normal, 3, (0,128,128), -1, lineType=cv2.LINE_AA)
 
-        img = cv2.line(img, u, v, (0, 0, 255), 1, lineType=cv2.LINE_AA)
+        img = cv2.line(img, np.add(u, center_c), np.add(v, center_c), (0, 0, 255), 1, lineType=cv2.LINE_AA)
         img = cv2.line(img, center_c, center_p, (255, 0, 0), 1, lineType=cv2.LINE_AA)
         #img = cv2.line(img, np.add(normal, origin), center_p, color, 1, lineType=cv2.LINE_AA)
 
