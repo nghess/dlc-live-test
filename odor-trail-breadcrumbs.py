@@ -60,7 +60,7 @@ while True:
 
     # Show video
     cv2.imshow('Pose', frame)
-    cv2.imwrite("output/breadcrumbs/" + str(i) + ".png", frame)
+    #cv2.imwrite("output/breadcrumbs/" + str(i) + ".png", frame)
     cv2.waitKey(1)
 
     # Reset loop
