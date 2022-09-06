@@ -43,7 +43,7 @@ popper = crv
 
 # Get video dimensions
 dim_img = cv2.imread(frames_dir+' ('+str(1)+').png')
-scale = .5
+scale = 1
 width = int(dim_img.shape[1]*scale)
 height = int(dim_img.shape[0]*scale)
 offset = (int(height/2), int(width/2))
@@ -63,29 +63,36 @@ while True:
 
     # Pop point if nose is close
     for c in range(len(crv)):
-        if cv2.norm(nose, (crv[c][0], crv[c][1])) <= 12: #or nose[0] < crv[c][0] and nose[1] < crv[c][1]:
+        nose_dist = cv2.norm(nose, (crv[c][0], crv[c][1]))
+        if nose_dist <= 12: #or nose[0] < crv[c][0] and nose[1] < crv[c][1]:
             popper = crv[c:]
     if len(popper) > 0:
         crv = popper
 
     # Draw curve
-    for c in range(1, len(crv)):
+    for c in range(1, len(crv)-1):
+
+        center_c = (int(crv[c][0]), int(crv[c][1]))  #Current point
+        center_n = (int(crv[c+1][0]), int(crv[c+1][1]))  # Next point
+        proximity = cv2.norm(nose, (crv[c][0], crv[c][1]))  # Distance between nose and current pt
+
         if c == 1:
             radius = 7
-            color = (255, 255, 0)
+            color = (255-proximity, 255-proximity, 0)
+            frame = cv2.line(frame, center_c, center_n, (0, 0, 0), 1, lineType=cv2.LINE_AA)
         elif c == 2:
             radius = 2
-            color = (255, 255, 0)
+            color = (0, 0, 0)
         else:
             radius = 1
-            color = (200, 200, 200)
-        center_c = (int(crv[c][0]), int(crv[c][1]))
-        center_p = (int(crv[c-1][0]), int(crv[c-1][1]))
+            color = (225, 225, 225)
+
+        # Draw Target
         frame = cv2.circle(frame, center_c, radius, color, -1, lineType=cv2.LINE_AA)
 
     # Show video
     cv2.imshow('Pose', frame)
-    #cv2.imwrite("output/breadcrumbs_jitter/" + str(i) + "_s" + str(rng) + ".png", frame)
+    cv2.imwrite("output/breadcrumbs_pointer/" + str(i) + "_s" + str(rng) + ".png", frame)
     cv2.waitKey(1)
 
     # Reset loop
@@ -93,4 +100,4 @@ while True:
         crv = load_curve(crv_file, jitter)
         popper = crv
         i = 0
-        break
+        #break
