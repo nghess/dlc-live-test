@@ -114,16 +114,17 @@ while True:
 
     padding = 50
     # Generate dot
-    if cv2.norm(hand_center, dot) < 10:
-        #dot = dot_vec broken but getting closer
-        if dot[0] < 10:
-            dot[0] += padding
-        if dot[0] > frame.shape[1]-10:
-            dot[0] -= padding
-        if dot[1] < 10:
-            dot[1] += padding
-        if dot[1] > frame.shape[0]-10:
-            dot[1] -= padding
+    if cv2.norm(midl4, dot) < 50:
+        #broken but getting closer
+        dot = vec_multiplier(dot, dot_vec, .5)
+        #if dot[0] < 10:
+        #    dot[0] += padding
+        #if dot[0] > frame.shape[1]-10:
+        #    dot[0] -= padding
+        #if dot[1] < 10:
+        #    dot[1] += padding
+        #if dot[1] > frame.shape[0]-10:
+        #    dot[1] -= padding
 
     frame = cv2.circle(frame, (int(dot[0]), int(dot[1])), 5, (0, 255, 255), -1, lineType=cv2.LINE_AA)
 
