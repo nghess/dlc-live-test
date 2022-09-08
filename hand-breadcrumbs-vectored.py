@@ -48,7 +48,7 @@ pink_l = 0
 c = 0
 scale = 1
 
-dot = (320, 240)
+dot = (50, 50)
 hand_vec = []
 
 while True:
@@ -96,17 +96,17 @@ while True:
 
     hand_vec.append(hand_center)
 
+    # Trim vector to current and last position
     if len(hand_vec) < 2:
         hand_vec.append(hand_center)
     if len(hand_vec) > 2:
         hand_vec = hand_vec[1:]
-    print(hand_vec)
 
     seed = np.random.uniform(0, 1000)
 
     #dot_vec = rand_segment(hand_vec[0], hand_vec[1], 1, seed)
 
-    dot_vec = vec_multiplier(hand_vec[0], hand_vec[1], 2)
+    dot_vec = vec_multiplier(hand_vec[0], hand_vec[1], .5)
     difference = np.subtract(dot, dot_vec)
     dot_vec = np.add(difference, dot)
 
@@ -114,7 +114,7 @@ while True:
 
     padding = 50
     # Generate dot
-    if cv2.norm(midl4, dot) < 50:
+    if cv2.norm(indx4, dot) < 10:
         #broken but getting closer
         dot = vec_multiplier(dot, dot_vec, .5)
         #if dot[0] < 10:
@@ -126,7 +126,7 @@ while True:
         #if dot[1] > frame.shape[0]-10:
         #    dot[1] -= padding
 
-    frame = cv2.circle(frame, (int(dot[0]), int(dot[1])), 5, (0, 255, 255), -1, lineType=cv2.LINE_AA)
+    frame = cv2.circle(frame, (int(dot[0]), int(dot[1])), 5, (255, 0, 255), -1, lineType=cv2.LINE_AA)
 
     frame = cv2.circle(frame, dot_vec, 1, (0, 0, 255), -1, lineType=cv2.LINE_AA)
 
