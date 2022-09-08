@@ -106,14 +106,16 @@ while True:
 
     #dot_vec = rand_segment(hand_vec[0], hand_vec[1], 1, seed)
 
-    dot_vec = vec_multiplier(hand_vec[0], hand_vec[1], 20)
+    dot_vec = vec_multiplier(hand_vec[0], hand_vec[1], 2)
+    difference = np.subtract(dot, dot_vec)
+    dot_vec = np.add(difference, dot)
 
     frame = cv2.line(frame, dot, dot_vec, (0, 0, 0), 1, lineType=cv2.LINE_AA)
 
     padding = 50
     # Generate dot
-    if cv2.norm(hand_center, dot) < 50:
-        dot = dot_vec #np.add(dot_vec, dot)#np.random.normal(hand_center, 75)
+    if cv2.norm(hand_center, dot) < 10:
+        #dot = dot_vec broken but getting closer
         if dot[0] < 10:
             dot[0] += padding
         if dot[0] > frame.shape[1]-10:
