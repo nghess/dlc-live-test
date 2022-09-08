@@ -139,5 +139,5 @@ while True:
     # Show video
     c += 1
     cv2.imshow('Pose', frame)
-    cv2.imwrite("output/live/" + str(c) + ".png", frame)
+    #cv2.imwrite("output/live/" + str(c) + ".png", frame)
     cv2.waitKey(1)
