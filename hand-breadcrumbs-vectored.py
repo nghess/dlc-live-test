@@ -1,6 +1,7 @@
 import cv2
 import time
 import numpy as np
+import random
 from dlclive import DLCLive, Processor
 
 folder = 'hand_model/'
@@ -19,6 +20,17 @@ def gaussian(x, mu, sig):
 def skeleton(start, end, canvas):
     for joint in range(start, end):
         canvas = cv2.line(canvas, points[joint], points[joint+1], (255, 128, 255), 1, lineType=cv2.LINE_AA)
+
+def rand_segment(p1, p2, strength, seed):
+    #weight = np.random.normal(.5, spread)
+    random.seed(seed)
+    weight = random.uniform(-.5, .5)*strength+.5
+    rand_seg = np.add((1-weight)*np.array(p1), weight*np.array(p2))
+    return (int(rand_seg[0]), int(rand_seg[1]))
+
+def vec_multiplier(p1, p2, weight):
+    seg = np.add((1-weight)*np.array(p1), weight*np.array(p2))
+    return (int(seg[0]), int(seg[1]))
 
 # Start Camera
 cap = cv2.VideoCapture(0)
@@ -83,27 +95,37 @@ while True:
     #frame = cv2.circle(frame, (int(hand_center[0]), int(hand_center[1])), 5, (255, 0, 0), -1, lineType=cv2.LINE_AA)
 
     hand_vec.append(hand_center)
+
+    if len(hand_vec) < 2:
+        hand_vec.append(hand_center)
     if len(hand_vec) > 2:
         hand_vec = hand_vec[1:]
     print(hand_vec)
 
+    seed = np.random.uniform(0, 1000)
 
+    #dot_vec = rand_segment(hand_vec[0], hand_vec[1], 1, seed)
+
+    dot_vec = vec_multiplier(hand_vec[0], hand_vec[1], 20)
+
+    frame = cv2.line(frame, dot, dot_vec, (0, 0, 0), 1, lineType=cv2.LINE_AA)
 
     padding = 50
     # Generate dot
-    if cv2.norm(hand_center, dot) < 45:
-        dot = np.random.normal(hand_center, 75)
-        if dot[0] < 0:
+    if cv2.norm(hand_center, dot) < 50:
+        dot = dot_vec #np.add(dot_vec, dot)#np.random.normal(hand_center, 75)
+        if dot[0] < 10:
             dot[0] += padding
-        if dot[0] > frame.shape[1]:
+        if dot[0] > frame.shape[1]-10:
             dot[0] -= padding
-        if dot[1] < 0:
+        if dot[1] < 10:
             dot[1] += padding
-        if dot[1] > frame.shape[0]:
+        if dot[1] > frame.shape[0]-10:
             dot[1] -= padding
 
     frame = cv2.circle(frame, (int(dot[0]), int(dot[1])), 5, (0, 255, 255), -1, lineType=cv2.LINE_AA)
 
+    frame = cv2.circle(frame, dot_vec, 1, (0, 0, 255), -1, lineType=cv2.LINE_AA)
 
     # Display FPS and Resolution
     fps = f"FPS: {round(1.0 / (time.time() - start_time))}"
