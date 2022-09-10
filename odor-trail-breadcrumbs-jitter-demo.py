@@ -141,7 +141,7 @@ while True:
 
     # Show video
     cv2.imshow('Jitter', img)
-    cv2.imwrite("output/breadcrumbs_jitter/" + str(i) + "_s" + str(rng) + ".png", img)
+    #cv2.imwrite("output/breadcrumbs_jitter/" + str(i) + "_s" + str(rng) + ".png", img)
     cv2.waitKey(1)
 
 

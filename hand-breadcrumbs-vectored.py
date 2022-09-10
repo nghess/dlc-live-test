@@ -29,6 +29,7 @@ def rand_segment(p1, p2, strength, seed):
     return (int(rand_seg[0]), int(rand_seg[1]))
 
 def vec_multiplier(p1, p2, weight):
+    norm = np.linalg.norm(p1)  # Normalize vector first <--------
     seg = np.add((1-weight)*np.array(p1), weight*np.array(p2))
     return (int(seg[0]), int(seg[1]))
 
