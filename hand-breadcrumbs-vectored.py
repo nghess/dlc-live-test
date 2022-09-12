@@ -11,6 +11,7 @@ dlc_live.init_inference()
 
 radius = 4
 thickness = -1
+offset = (int(640/2), int(480/2))
 
 
 def gaussian(x, mu, sig):
@@ -21,6 +22,7 @@ def skeleton(start, end, canvas):
     for joint in range(start, end):
         canvas = cv2.line(canvas, points[joint], points[joint+1], (255, 128, 255), 1, lineType=cv2.LINE_AA)
 
+
 def rand_segment(p1, p2, strength, seed):
     #weight = np.random.normal(.5, spread)
     random.seed(seed)
@@ -28,8 +30,8 @@ def rand_segment(p1, p2, strength, seed):
     rand_seg = np.add((1-weight)*np.array(p1), weight*np.array(p2))
     return (int(rand_seg[0]), int(rand_seg[1]))
 
+
 def vec_multiplier(p1, p2, weight):
-    norm = np.linalg.norm(p1)  # Normalize vector first <--------
     seg = np.add((1-weight)*np.array(p1), weight*np.array(p2))
     return (int(seg[0]), int(seg[1]))
 
@@ -49,7 +51,7 @@ pink_l = 0
 c = 0
 scale = 1
 
-dot = (50, 50)
+dot = (320, 80)
 hand_vec = []
 
 while True:
@@ -105,17 +107,15 @@ while True:
 
     seed = np.random.uniform(0, 1000)
 
-    #dot_vec = rand_segment(hand_vec[0], hand_vec[1], 1, seed)
-
-    dot_vec = vec_multiplier(hand_vec[0], hand_vec[1], .5)
+    dot_vec = vec_multiplier(hand_vec[0], hand_vec[1], 1)
     difference = np.subtract(dot, dot_vec)
     dot_vec = np.add(difference, dot)
 
-    frame = cv2.line(frame, dot, dot_vec, (0, 0, 0), 1, lineType=cv2.LINE_AA)
+    frame = cv2.line(frame, dot, dot_vec, (255, 255, 255), 1, lineType=cv2.LINE_AA)
 
     padding = 50
     # Generate dot
-    if cv2.norm(indx4, dot) < 10:
+    if cv2.norm(indx4, dot) < 20:
         #broken but getting closer
         dot = vec_multiplier(dot, dot_vec, .5)
         #if dot[0] < 10:
@@ -129,7 +129,7 @@ while True:
 
     frame = cv2.circle(frame, (int(dot[0]), int(dot[1])), 5, (255, 0, 255), -1, lineType=cv2.LINE_AA)
 
-    frame = cv2.circle(frame, dot_vec, 1, (0, 0, 255), -1, lineType=cv2.LINE_AA)
+    frame = cv2.circle(frame, dot_vec, 1, (255, 255, 255), -1, lineType=cv2.LINE_AA)
 
     # Display FPS and Resolution
     fps = f"FPS: {round(1.0 / (time.time() - start_time))}"
@@ -140,5 +140,5 @@ while True:
     # Show video
     c += 1
     cv2.imshow('Pose', frame)
-    #cv2.imwrite("output/live/" + str(c) + ".png", frame)
+    cv2.imwrite("output/live/" + str(c) + ".png", frame)
     cv2.waitKey(1)
